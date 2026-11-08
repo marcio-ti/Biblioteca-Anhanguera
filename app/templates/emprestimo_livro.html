@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block titulo %}Empréstimo de livros{% endblock %}
+{% block conteudo %}
+<h2>Empréstimo de livros</h2>
+{% if not livros %}<p class="vazio">Não há livros com cópias disponíveis.</p>{% endif %}
+{% if not usuarios %}<p class="vazio">Não há usuários cadastrados.</p>{% endif %}
+<form method="post" class="formulario">
+    <input type="hidden" name="token_csrf" value="{{ token_csrf() }}">
+    <label for="usuario_id">Usuário</label>
+    <select id="usuario_id" name="usuario_id" required>
+        <option value="">Selecione um usuário</option>
+        {% for usuario in usuarios %}<option value="{{ usuario.id }}" {% if request.form.get('usuario_id') == usuario.id|string %}selected{% endif %}>{{ usuario.nome }} — {{ usuario.identificacao }}</option>{% endfor %}
+    </select>
+    <label for="livro_id">Livro disponível</label>
+    <select id="livro_id" name="livro_id" required>
+        <option value="">Selecione um livro</option>
+        {% for livro in livros %}<option value="{{ livro.id }}" {% if request.form.get('livro_id') == livro.id|string %}selected{% endif %}>{{ livro.titulo }} — {{ livro.copias_disponiveis }} disponível(is)</option>{% endfor %}
+    </select>
+    <div class="acoes"><button type="submit" {% if not livros or not usuarios %}disabled{% endif %}>Confirmar empréstimo</button><a href="{{ url_for('emprestimos.devolucao_livro') }}">Ver empréstimos ativos</a></div>
+</form>
+{% endblock %}

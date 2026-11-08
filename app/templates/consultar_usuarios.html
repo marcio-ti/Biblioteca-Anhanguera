@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block titulo %}Usuários{% endblock %}
+{% block conteudo %}
+<div class="topo-pagina"><h2>Usuários cadastrados</h2><a class="botao" href="{{ url_for('usuarios.cadastrar_usuario') }}">Cadastrar usuário</a></div>
+{% if usuarios %}
+<div class="tabela-rolagem"><table>
+    <thead><tr><th>Nome</th><th>Identificação</th><th>Contato</th><th>Ações</th></tr></thead>
+    <tbody>{% for usuario in usuarios %}<tr>
+        <td>{{ usuario.nome }}</td><td>{{ usuario.identificacao }}</td><td>{{ usuario.contato }}</td>
+        <td><div class="acoes"><a href="{{ url_for('usuarios.alterar_usuario', usuario_id=usuario.id) }}">Alterar</a>
+            <form method="post" action="{{ url_for('usuarios.deletar_usuario', usuario_id=usuario.id) }}" data-confirmar="Excluir este usuário?">
+                <input type="hidden" name="token_csrf" value="{{ token_csrf() }}"><button type="submit" class="botao-perigo">Excluir</button>
+            </form></div></td>
+    </tr>{% endfor %}</tbody>
+</table></div>
+{% else %}<p class="vazio">Nenhum usuário cadastrado.</p>{% endif %}
+{% endblock %}

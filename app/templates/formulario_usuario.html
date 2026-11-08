@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ 'Alterar usuário' if usuario else 'Cadastrar usuário' }}{% endblock %}
+{% block conteudo %}
+<h2>{{ 'Alterar usuário' if usuario else 'Cadastrar usuário' }}</h2>
+<form method="post" class="formulario">
+    <input type="hidden" name="token_csrf" value="{{ token_csrf() }}">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" maxlength="150" required value="{{ request.form.get('nome', usuario.nome if usuario else '') }}">
+    <label for="identificacao">Número de identificação</label>
+    <input id="identificacao" name="identificacao" maxlength="60" required value="{{ request.form.get('identificacao', usuario.identificacao if usuario else '') }}">
+    <label for="contato">Contato</label>
+    <input id="contato" name="contato" maxlength="150" required value="{{ request.form.get('contato', usuario.contato if usuario else '') }}">
+    <div class="acoes"><button type="submit">Salvar</button><a href="{{ url_for('usuarios.consultar_usuarios') }}">Cancelar</a></div>
+</form>
+{% endblock %}

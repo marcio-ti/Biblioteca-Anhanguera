@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block titulo %}Início{% endblock %}
+{% block conteudo %}
+    <h2>Gerenciamento da biblioteca</h2>
+    <div id="container_selecao">
+        <a class="cartao" href="{{ url_for('biblioteca.cadastrar_livro') }}">Cadastro de Livros</a>
+        <a class="cartao" href="{{ url_for('usuarios.cadastrar_usuario') }}">Cadastro de Usuários</a>
+        <a class="cartao" href="{{ url_for('emprestimos.emprestimo_livro') }}">Empréstimo de Livros</a>
+        <a class="cartao" href="{{ url_for('biblioteca.relatorio') }}">Relatórios</a>
+    </div>
+{% endblock %}

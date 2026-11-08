@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block titulo %}Devolução de livros{% endblock %}
+{% block conteudo %}
+<div class="topo-pagina"><h2>Empréstimos ativos e devoluções</h2><a class="botao" href="{{ url_for('emprestimos.emprestimo_livro') }}">Novo empréstimo</a></div>
+{% if emprestimos %}<div class="tabela-rolagem"><table>
+    <thead><tr><th>Livro</th><th>Usuário</th><th>Data do empréstimo</th><th>Ação</th></tr></thead>
+    <tbody>{% for emprestimo in emprestimos %}<tr>
+        <td>{{ emprestimo.livro.titulo }}</td><td>{{ emprestimo.usuario.nome }}</td><td>{{ emprestimo.data_emprestimo.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td><form method="post" action="{{ url_for('emprestimos.registrar_devolucao', emprestimo_id=emprestimo.id) }}" data-confirmar="Confirmar a devolução deste livro?">
+            <input type="hidden" name="token_csrf" value="{{ token_csrf() }}"><button type="submit">Devolver</button>
+        </form></td>
+    </tr>{% endfor %}</tbody>
+</table></div>
+{% else %}<p class="vazio">Não há empréstimos ativos.</p>{% endif %}
+{% endblock %}

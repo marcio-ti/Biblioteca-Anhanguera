@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block titulo %}Consultar livros{% endblock %}
+{% block conteudo %}
+<div class="topo-pagina"><h2>Consulta de livros</h2><a class="botao" href="{{ url_for('biblioteca.cadastrar_livro') }}">Cadastrar livro</a></div>
+<form method="get" class="filtros">
+    <div><label for="titulo">Título</label><input id="titulo" name="titulo" value="{{ request.args.get('titulo', '') }}"></div>
+    <div><label for="autor">Autor</label><input id="autor" name="autor" value="{{ request.args.get('autor', '') }}"></div>
+    <div><label for="ano_publicacao">Ano de publicação</label><input id="ano_publicacao" name="ano_publicacao" type="number" min="1" value="{{ request.args.get('ano_publicacao', '') }}"></div>
+    <button type="submit">Pesquisar</button>
+    <a href="{{ url_for('biblioteca.consultar_livro') }}">Limpar</a>
+</form>
+{% if livros %}
+<div class="tabela-rolagem"><table>
+    <thead><tr><th>Título</th><th>Autor</th><th>Ano</th><th>Total</th><th>Disponíveis</th><th>Ações</th></tr></thead>
+    <tbody>{% for livro in livros %}
+        <tr><td>{{ livro.titulo }}</td><td>{{ livro.autor }}</td><td>{{ livro.ano_publicacao }}</td><td>{{ livro.total_copias }}</td><td>{{ livro.copias_disponiveis }}</td>
+        <td><a href="{{ url_for('biblioteca.detalhe_livro', livro_id=livro.id) }}">Detalhes</a> · <a href="{{ url_for('biblioteca.alterar_livro', livro_id=livro.id) }}">Alterar</a></td></tr>
+    {% endfor %}</tbody>
+</table></div>
+{% else %}<p class="vazio">Nenhum livro encontrado.</p>{% endif %}
+{% endblock %}

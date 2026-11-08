@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Biblioteca{% endblock %} — Biblioteca</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+</head>
+<body>
+<header>
+    <h1><a href="{{ url_for('biblioteca.index') }}">Biblioteca</a></h1>
+    <p>Sistema de empréstimos de livros da Faculdade Anhanguera</p>
+</header>
+<nav aria-label="Navegação principal">
+    <a href="{{ url_for('biblioteca.index') }}">Início</a>
+    <a href="{{ url_for('biblioteca.consultar_livro') }}">Livros</a>
+    <a href="{{ url_for('usuarios.consultar_usuarios') }}">Usuários</a>
+    <a href="{{ url_for('emprestimos.emprestimo_livro') }}">Empréstimos</a>
+    <a href="{{ url_for('emprestimos.devolucao_livro') }}">Devoluções</a>
+    <a href="{{ url_for('biblioteca.relatorio') }}">Relatórios</a>
+</nav>
+<main>
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% for categoria, mensagem in mensagens %}
+            <p class="mensagem mensagem-{{ categoria }}" role="status">{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+    {% block conteudo %}{% endblock %}
+</main>
+</body>
+</html>

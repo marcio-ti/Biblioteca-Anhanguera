@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ 'Alterar livro' if livro else 'Cadastrar livro' }}{% endblock %}
+{% block conteudo %}
+<h2>{{ 'Alterar livro' if livro else 'Cadastrar livro' }}</h2>
+<form method="post" class="formulario">
+    <input type="hidden" name="token_csrf" value="{{ token_csrf() }}">
+    <label for="titulo">Título</label>
+    <input id="titulo" name="titulo" maxlength="200" required value="{{ request.form.get('titulo', livro.titulo if livro else '') }}">
+    <label for="autor">Autor</label>
+    <input id="autor" name="autor" maxlength="150" required value="{{ request.form.get('autor', livro.autor if livro else '') }}">
+    <label for="ano_publicacao">Ano de publicação</label>
+    <input id="ano_publicacao" name="ano_publicacao" type="number" min="1" step="1" required value="{{ request.form.get('ano_publicacao', livro.ano_publicacao if livro else '') }}">
+    <label for="total_copias">Total de cópias</label>
+    <input id="total_copias" name="total_copias" type="number" min="0" step="1" required value="{{ request.form.get('total_copias', livro.total_copias if livro else '') }}">
+    {% if livro %}<p class="ajuda">Cópias emprestadas: {{ livro.total_copias - livro.copias_disponiveis }}. Não reduza o total abaixo desse número.</p>{% endif %}
+    <div class="acoes"><button type="submit">Salvar</button><a href="{{ url_for('biblioteca.consultar_livro') }}">Cancelar</a></div>
+</form>
+{% endblock %}

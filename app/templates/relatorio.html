@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block titulo %}Relatórios{% endblock %}
+{% block conteudo %}
+<h2>Relatórios da biblioteca</h2>
+<section class="bloco-relatorio">
+    <h3>Livros disponíveis ({{ livros|length }})</h3>
+    {% if livros %}<div class="tabela-rolagem"><table><thead><tr><th>Título</th><th>Autor</th><th>Disponíveis</th></tr></thead><tbody>
+        {% for livro in livros %}<tr><td>{{ livro.titulo }}</td><td>{{ livro.autor }}</td><td>{{ livro.copias_disponiveis }}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<p class="vazio">Nenhum livro disponível.</p>{% endif %}
+</section>
+<section class="bloco-relatorio">
+    <h3>Livros emprestados ({{ emprestimos|length }})</h3>
+    {% if emprestimos %}<div class="tabela-rolagem"><table><thead><tr><th>Livro</th><th>Usuário</th><th>Empréstimo</th></tr></thead><tbody>
+        {% for emprestimo in emprestimos %}<tr><td>{{ emprestimo.livro.titulo }}</td><td>{{ emprestimo.usuario.nome }}</td><td>{{ emprestimo.data_emprestimo.strftime('%d/%m/%Y') }}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<p class="vazio">Nenhum empréstimo ativo.</p>{% endif %}
+</section>
+<section class="bloco-relatorio">
+    <h3>Usuários cadastrados ({{ usuarios|length }})</h3>
+    {% if usuarios %}<div class="tabela-rolagem"><table><thead><tr><th>Nome</th><th>Identificação</th><th>Contato</th></tr></thead><tbody>
+        {% for usuario in usuarios %}<tr><td>{{ usuario.nome }}</td><td>{{ usuario.identificacao }}</td><td>{{ usuario.contato }}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<p class="vazio">Nenhum usuário cadastrado.</p>{% endif %}
+</section>
+<section class="bloco-relatorio">
+    <h3>Histórico de empréstimos ({{ historico|length }})</h3>
+    {% if historico %}<div class="tabela-rolagem"><table><thead><tr><th>Livro</th><th>Usuário</th><th>Empréstimo</th><th>Devolução</th><th>Situação</th></tr></thead><tbody>
+        {% for emprestimo in historico %}<tr><td>{{ emprestimo.livro.titulo }}</td><td>{{ emprestimo.usuario.nome }}</td>
+            <td>{{ emprestimo.data_emprestimo.strftime('%d/%m/%Y') }}</td>
+            <td>{{ emprestimo.data_devolucao.strftime('%d/%m/%Y') if emprestimo.data_devolucao else '—' }}</td>
+            <td>{{ emprestimo.situacao|capitalize }}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<p class="vazio">Nenhum empréstimo registrado.</p>{% endif %}
+</section>
+{% endblock %}

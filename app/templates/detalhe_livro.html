@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block titulo %}Detalhes do livro{% endblock %}
+{% block conteudo %}
+<h2>Detalhes do livro</h2>
+<dl class="detalhes">
+    <dt>Título</dt><dd>{{ livro.titulo }}</dd>
+    <dt>Autor</dt><dd>{{ livro.autor }}</dd>
+    <dt>Ano de publicação</dt><dd>{{ livro.ano_publicacao }}</dd>
+    <dt>Total de cópias</dt><dd>{{ livro.total_copias }}</dd>
+    <dt>Cópias disponíveis</dt><dd>{{ livro.copias_disponiveis }}</dd>
+</dl>
+<div class="acoes">
+    <a class="botao" href="{{ url_for('biblioteca.alterar_livro', livro_id=livro.id) }}">Alterar</a>
+    <form method="post" action="{{ url_for('biblioteca.deletar_livro', livro_id=livro.id) }}" data-confirmar="Excluir este livro?">
+        <input type="hidden" name="token_csrf" value="{{ token_csrf() }}"><button type="submit" class="botao-perigo">Excluir</button>
+    </form>
+    <a href="{{ url_for('biblioteca.consultar_livro') }}">Voltar</a>
+</div>
+{% endblock %}
